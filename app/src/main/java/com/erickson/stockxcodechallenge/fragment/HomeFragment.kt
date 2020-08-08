@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.erickson.stockxcodechallenge.R
+import dagger.android.support.DaggerFragment
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : DaggerFragment() {
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
