@@ -1,24 +1,25 @@
 package com.erickson.stockxcodechallenge
 
+import android.content.Context
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.erickson.stockxcodechallenge.databinding.MainActivityBinding
+import com.erickson.stockxcodechallenge.fragment.SearchFragment
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
+class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector{
 
     @Inject
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -34,16 +35,38 @@ class MainActivity : DaggerAppCompatActivity(), HasSupportFragmentInjector {
         return dispatchingAndroidInjector
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-//        setSupportActionBar(toolbar)
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+    override fun onStart() {
+        super.onStart()
+
+        binding.fab.setOnClickListener { view ->
+            if(!binding.homeSearch.text.isEmpty()) {
+                val bundle = Bundle()
+
+                bundle.putString("sub", binding.homeSearch.text.toString())
+
+                val fragment = SearchFragment()
+                fragment.arguments = bundle
+
+                this.supportFragmentManager.beginTransaction()
+                    .replace(R.id.nav_host_fragment, fragment, "second")
+                    .addToBackStack(null)
+                    .commit()
+
+                Snackbar.make(view, "/r/"+ binding.homeSearch.text, Snackbar.LENGTH_LONG)
+                    .show()
+
+                binding.homeSearch.text.clear()
+
+               val input: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                input.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
         }
     }
 
