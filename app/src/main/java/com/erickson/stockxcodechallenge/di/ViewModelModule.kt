@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.erickson.stockxcodechallenge.MainViewModel
 import com.erickson.stockxcodechallenge.fragment.HomeViewModel
+import com.erickson.stockxcodechallenge.fragment.SearchViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -23,6 +24,11 @@ internal abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     protected abstract fun homeViewModel(homeViewModel: HomeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    protected abstract fun searchViewModel(searchViewModel: SearchViewModel): ViewModel
 
 
 }

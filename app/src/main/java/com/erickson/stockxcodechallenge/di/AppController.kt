@@ -22,6 +22,5 @@ class AppController : Application(), HasActivityInjector {
             .build()
             .inject(this)
 
-//        FirebaseApp.initializeApp(this)
     }
 }

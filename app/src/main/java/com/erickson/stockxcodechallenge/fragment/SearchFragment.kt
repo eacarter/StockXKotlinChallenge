@@ -1,36 +1,31 @@
 package com.erickson.stockxcodechallenge.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.erickson.stockxcodechallenge.R
 import com.erickson.stockxcodechallenge.adapter.ListPostAdapter
-import com.erickson.stockxcodechallenge.databinding.HomeFragmentBinding
-import com.google.android.material.snackbar.Snackbar
+import com.erickson.stockxcodechallenge.databinding.SearchFragmentBinding
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_second.*
 import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
-class HomeFragment : DaggerFragment() {
+class SearchFragment : DaggerFragment() {
 
     @Inject
     internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var binding: HomeFragmentBinding
+    private lateinit var binding: SearchFragmentBinding
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,21 +38,25 @@ class HomeFragment : DaggerFragment() {
             savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_first, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_second, container, false)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
 
-        loadContent()
+        var text: String? = arguments?.getString("sub", "")
 
-        binding.homeSwipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-            loadContent()
-            binding.homeSwipe.isRefreshing = false
+        loadContent("/r/"+text)
+
+        Log.d("Search", text)
+
+        binding.searchSwipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+            loadContent(text.toString())
+            binding.searchSwipe.isRefreshing = false
         })
 
         return binding.root
     }
-    fun loadContent(){
-        viewModel.getList("").observe(viewLifecycleOwner, Observer {
+    fun loadContent(string: String){
+        viewModel.getList(string).observe(viewLifecycleOwner, Observer {
             with(homeRecyclerView){
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(this.context)

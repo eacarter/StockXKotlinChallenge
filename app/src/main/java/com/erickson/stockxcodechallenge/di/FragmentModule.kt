@@ -1,6 +1,7 @@
 package com.erickson.stockxcodechallenge.di
 
 import com.erickson.stockxcodechallenge.fragment.HomeFragment
+import com.erickson.stockxcodechallenge.fragment.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -12,5 +13,8 @@ abstract class FragmentModule {
      */
     @ContributesAndroidInjector
     abstract fun contributeHomeFragment(): HomeFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSearchFragment(): SearchFragment
 
 }

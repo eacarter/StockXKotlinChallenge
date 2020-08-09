@@ -12,7 +12,7 @@ import com.google.gson.JsonObject
 import org.json.JSONObject
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(val postManager: PostManager): ViewModel() {
+class SearchViewModel @Inject constructor(val postManager: PostManager): ViewModel() {
 
     fun getList(subreddit: String): MediatorLiveData<Base> {
         return postManager.getPost(subreddit)
