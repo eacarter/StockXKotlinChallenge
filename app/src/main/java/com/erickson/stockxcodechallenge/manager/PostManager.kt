@@ -31,7 +31,7 @@ class PostManager @Inject constructor(){
                     if (response.isSuccessful) {
                         post.value = response.body()
                     } else {
-                      Log.d("POST","Error: ${response.code()}, "+ subreddit)
+                      Log.d("POST","Error: ${response.code()} ")
 
                     }
                 } catch (e: HttpException) {
