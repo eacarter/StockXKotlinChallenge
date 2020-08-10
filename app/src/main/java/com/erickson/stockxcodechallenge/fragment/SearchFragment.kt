@@ -57,7 +57,7 @@ class SearchFragment : DaggerFragment() {
     }
     fun loadContent(string: String){
         viewModel.getList(string).observe(viewLifecycleOwner, Observer {
-            with(homeRecyclerView){
+            with(searchRecyclerView){
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(this.context)
                 adapter = ListPostAdapter(it.data.children)
