@@ -34,6 +34,8 @@ class WebFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_web, container, false)
         var text: String? = arguments?.getString("url", "")
 
+        view.webView.getSettings().setLoadWithOverviewMode(true);
+        view.webView.getSettings().setUseWideViewPort(true);
         view.webView.loadUrl(text)
 
         return view
